@@ -31,10 +31,22 @@ public class ORTRenderer {
     }
 
     static Color get_color(ray r) {
+        if (hit_sphere(new vec3(0, 0, -1), .5f, r))
+            return new Color(1.f, 0.f, 0.f);
+
         vec3 dir = r.dir.get_normal();
         float t = .5f * (dir.y + 1);
         linear_color a = new linear_color(1, 1, 1);
         linear_color b = new linear_color(.5f, .7f, 1);
         return linear_color.lerp(a, b, t).to_color();
+    }
+
+    static boolean hit_sphere(vec3 center, float radius, ray r) {
+        vec3 oc = r.origin.diff(center);
+        float a = r.dir.dot(r.dir);
+        float b = 2 * oc.dot(r.dir);
+        float c = oc.dot(oc) - radius*radius;
+        float discriminant = b*b - 4*a*c;
+        return discriminant > 0;
     }
 }
