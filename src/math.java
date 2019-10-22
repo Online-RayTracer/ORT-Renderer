@@ -12,4 +12,8 @@ public class math {
         } while (p.size_sqr() >= 1);
         return p;
     }
+
+    static vec3 reflect(vec3 v, vec3 n) {
+        return v.diff(n.get_mul(2*v.dot(n)));
+    }
 }

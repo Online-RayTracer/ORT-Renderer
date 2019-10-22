@@ -37,5 +37,11 @@ public class vec3 {
         return get_mul(1-t).sum(b.get_mul(t));
     }
 
+    void copy(vec3 src) {
+        x = src.x;
+        y = src.y;
+        z = src.z;
+    }
+
     float x, y, z;
 }

@@ -1,8 +1,9 @@
 public class sphere implements hitable {
     public sphere() {}
-    public sphere(vec3 cen, float r) {
+    public sphere(vec3 cen, float r, material m) {
         center = cen;
         radius = r;
+        mat = m;
     }
 
     @Override
@@ -19,6 +20,7 @@ public class sphere implements hitable {
                     rec.t = temp;
                     rec.p = r.point_at(rec.t);
                     rec.normal = rec.p.diff(center).get_div(radius);
+                    rec.mat = mat;
                     return true;
                 }
                 return false;
@@ -32,6 +34,7 @@ public class sphere implements hitable {
 
     public vec3 center;
     public float radius;
+    public material mat;
 }
 
 @FunctionalInterface

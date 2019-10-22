@@ -12,9 +12,11 @@ public class ORTRenderer {
         int ny = 100;
         int ns = 100;
 
-        hitable list[] = new hitable[2];
-        list[0] = new sphere(new vec3(0, 0, -1), .5f);
-        list[1] = new sphere(new vec3(0, -100.5f, -1), 100);
+        hitable list[] = new hitable[4];
+        list[0] = new sphere(new vec3(0, 0, -1), .5f, new lambertian(new vec3(.8f, .3f, .3f)));
+        list[1] = new sphere(new vec3(0, -100.5f, -1), 100, new lambertian(new vec3(.8f, .8f, 0)));
+        list[2] = new sphere(new vec3(1, 0, -1), .5f, new metal(new vec3(.8f, .6f, .2f)));
+        list[3] = new sphere(new vec3(-1, 0, -1), .5f, new metal(new vec3(.8f, .8f, .8f)));
 
         hitable world = new hitable_list(list);
         camera cam = new camera();
@@ -28,7 +30,7 @@ public class ORTRenderer {
                     float v = 1 - (y + (float)Math.random()) / ny;
                     ray r = cam.get_ray(u, v);
                     vec3 p = r.point_at(2);
-                    col.add(get_color(r, world));
+                    col.add(get_color(r, world, 0));
                 }
                 col.div(ns);
                 col.x = (float)Math.sqrt(col.x);
@@ -43,11 +45,15 @@ public class ORTRenderer {
         } catch (IOException e) {}
     }
 
-    static vec3 get_color(ray r, hitable world) {
+    static vec3 get_color(ray r, hitable world, int depth) {
         hit_record rec = new hit_record();
         if (world.hit(r, .001f, Float.MAX_VALUE, rec)) {
-            vec3 target = rec.p.sum(rec.normal).sum(math.random_in_unit_sphere());
-            return get_color(new ray(rec.p, target.diff(rec.p)), world).get_mul(.5f);
+            ray scattered = new ray();
+            vec3 attenuation = new vec3();
+            if (depth < 50 && rec.mat.scatter(r, rec, attenuation, scattered)) {
+                return get_color(scattered, world, depth+1).get_mul(attenuation);
+            }
+            return new vec3(0, 0, 0);
         }
 
         vec3 dir = r.dir.get_normal();
