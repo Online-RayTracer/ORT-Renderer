@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,9 @@ public class ORTRenderer {
                     col.add(get_color(r, world));
                 }
                 col.div(ns);
+                col.x = (float)Math.sqrt(col.x);
+                col.y = (float)Math.sqrt(col.y);
+                col.z = (float)Math.sqrt(col.z);
                 image.setRGB(x, y, new Color(col.x, col.y, col.z).getRGB());
             }
         }
@@ -41,8 +45,9 @@ public class ORTRenderer {
 
     static vec3 get_color(ray r, hitable world) {
         hit_record rec = new hit_record();
-        if (world.hit(r, 0, Float.MAX_VALUE, rec)) {
-            return rec.normal.sum(new vec3(1, 1, 1)).get_mul(.5f);
+        if (world.hit(r, .001f, Float.MAX_VALUE, rec)) {
+            vec3 target = rec.p.sum(rec.normal).sum(math.random_in_unit_sphere());
+            return get_color(new ray(rec.p, target.diff(rec.p)), world).get_mul(.5f);
         }
 
         vec3 dir = r.dir.get_normal();
