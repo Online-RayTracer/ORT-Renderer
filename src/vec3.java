@@ -33,5 +33,9 @@ public class vec3 {
     void normalize() { div(size()); }
     vec3 get_normal() { vec3 v = new vec3(this); v.normalize(); return v; }
 
+    vec3 lerp(vec3 b, float t) {
+        return get_mul(1-t).sum(b.get_mul(t));
+    }
+
     float x, y, z;
 }
