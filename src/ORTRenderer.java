@@ -8,15 +8,15 @@ import javax.imageio.ImageIO;
 
 public class ORTRenderer {
     public static void main(String[] args) {
-        int nx = 200;
-        int ny = 100;
-        int ns = 100;
+        int nx = 512;
+        int ny = 256;
+        int ns = 1000;
 
         hitable list[] = new hitable[4];
         list[0] = new sphere(new vec3(0, 0, -1), .5f, new lambertian(new vec3(.8f, .3f, .3f)));
         list[1] = new sphere(new vec3(0, -100.5f, -1), 100, new lambertian(new vec3(.8f, .8f, 0)));
-        list[2] = new sphere(new vec3(1, 0, -1), .5f, new metal(new vec3(.8f, .6f, .2f)));
-        list[3] = new sphere(new vec3(-1, 0, -1), .5f, new metal(new vec3(.8f, .8f, .8f)));
+        list[2] = new sphere(new vec3(1, 0, -1), .5f, new metal(new vec3(.8f, .6f, .2f), 1));
+        list[3] = new sphere(new vec3(-1, 0, -1), .5f, new metal(new vec3(.8f, .8f, .8f), .3f));
 
         hitable world = new hitable_list(list);
         camera cam = new camera();
@@ -25,6 +25,8 @@ public class ORTRenderer {
         for (int y = 0; y < ny; y++) {
             for (int x = 0; x < nx; x++) {
                 vec3 col = new vec3();
+
+                // MSAA
                 for (int s = 0; s < ns; ++s) {
                     float u = (x + (float)Math.random()) / nx;
                     float v = 1 - (y + (float)Math.random()) / ny;
@@ -33,9 +35,12 @@ public class ORTRenderer {
                     col.add(get_color(r, world, 0));
                 }
                 col.div(ns);
+
+                // gamma correction
                 col.x = (float)Math.sqrt(col.x);
                 col.y = (float)Math.sqrt(col.y);
                 col.z = (float)Math.sqrt(col.z);
+
                 image.setRGB(x, y, new Color(col.x, col.y, col.z).getRGB());
             }
         }
@@ -56,6 +61,7 @@ public class ORTRenderer {
             return new vec3(0, 0, 0);
         }
 
+        // sky
         vec3 dir = r.dir.get_normal();
         float t = .5f * (dir.y + 1);
         vec3 a = new vec3(1, 1, 1);
