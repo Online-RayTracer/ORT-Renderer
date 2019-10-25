@@ -13,10 +13,14 @@ public class ORTRenderer {
         int ns = 1000;
 
         hitable list[] = new hitable[4];
-        list[0] = new sphere(new vec3(0, 0, -1), .5f, new lambertian(new vec3(.8f, .3f, .3f)));
-        list[1] = new sphere(new vec3(0, -100.5f, -1), 100, new lambertian(new vec3(.8f, .8f, 0)));
-        list[2] = new sphere(new vec3(1, 0, -1), .5f, new metal(new vec3(.8f, .6f, .2f), 1));
-        list[3] = new sphere(new vec3(-1, 0, -1), .5f, new metal(new vec3(.8f, .8f, .8f), .3f));
+        list[0] = new sphere(new vec3(0, 0, -1), .5f,
+                new lambertian(new vec3(.1f, .2f, .5f)));
+        list[1] = new sphere(new vec3(0, -100.5f, -1), 100,
+                new lambertian(new vec3(.8f, .8f, 0)));
+        list[2] = new sphere(new vec3(1, 0, -1), .5f,
+                new metal(new vec3(.8f, .6f, .2f), 0));
+        list[3] = new sphere(new vec3(-1, 0, -1), .5f,
+                new dielectric(1.5f));
 
         hitable world = new hitable_list(list);
         camera cam = new camera();

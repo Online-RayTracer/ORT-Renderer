@@ -16,4 +16,15 @@ public class math {
     static vec3 reflect(vec3 v, vec3 n) {
         return v.diff(n.get_mul(2*v.dot(n)));
     }
+
+    static boolean refract(vec3 v, vec3 n, float ni_over_nt, vec3 out_refracted) {
+        vec3 uv = v.get_normal();
+        float dt = uv.dot(n);
+        float discriminant = 1 - ni_over_nt*ni_over_nt*(1-dt*dt);
+        if (discriminant > 0) {
+            out_refracted.copy(uv.diff(n.get_mul(dt)).get_mul(ni_over_nt).diff(n.get_mul((float)Math.sqrt(discriminant))));
+            return true;
+        }
+        return false;
+    }
 }
