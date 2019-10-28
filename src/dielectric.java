@@ -8,20 +8,30 @@ public class dielectric implements material {
         float ni_over_nt;
         out_attenuation.copy(new vec3(1, 1, 1));
         vec3 refracted = new vec3();
+        float reflect_prob;
+        float cosine;
         if (r_in.dir.dot(rec.normal) > 0) {
             outward_normal = rec.normal.inverse();
             ni_over_nt = ref_idx;
+            cosine = ref_idx * r_in.dir.dot(rec.normal) / r_in.dir.size();
         }
         else {
             outward_normal = rec.normal;
             ni_over_nt = 1 / ref_idx;
+            cosine = -r_in.dir.dot(rec.normal) / r_in.dir.size();
         }
         if (math.refract(r_in.dir, outward_normal, ni_over_nt, refracted)) {
-            out_scattered.copy(new ray(rec.p, refracted));
+            reflect_prob = math.schlick(cosine, ref_idx);
         }
         else {
             out_scattered.copy(new ray(rec.p, reflected));
-            return false;
+            reflect_prob = 1;
+        }
+        if ((float)Math.random() < reflect_prob) {
+            out_scattered.copy(new ray(rec.p, reflected));
+        }
+        else {
+            out_scattered.copy(new ray(rec.p, refracted));
         }
         return true;
     }

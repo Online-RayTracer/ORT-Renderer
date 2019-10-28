@@ -8,11 +8,11 @@ import javax.imageio.ImageIO;
 
 public class ORTRenderer {
     public static void main(String[] args) {
-        int nx = 512;
-        int ny = 256;
-        int ns = 1000;
+        int nx = 400;
+        int ny = 200;
+        int ns = 100;
 
-        hitable list[] = new hitable[4];
+        hitable list[] = new hitable[5];
         list[0] = new sphere(new vec3(0, 0, -1), .5f,
                 new lambertian(new vec3(.1f, .2f, .5f)));
         list[1] = new sphere(new vec3(0, -100.5f, -1), 100,
@@ -20,6 +20,8 @@ public class ORTRenderer {
         list[2] = new sphere(new vec3(1, 0, -1), .5f,
                 new metal(new vec3(.8f, .6f, .2f), 0));
         list[3] = new sphere(new vec3(-1, 0, -1), .5f,
+                new dielectric(1.5f));
+        list[4] = new sphere(new vec3(-1, 0, -1), -.45f,
                 new dielectric(1.5f));
 
         hitable world = new hitable_list(list);
