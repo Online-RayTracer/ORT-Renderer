@@ -1,10 +1,8 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class ORTRenderer {
     public static void main(String[] args) {
@@ -25,7 +23,7 @@ public class ORTRenderer {
                 new dielectric(1.5f));
 
         hitable world = new hitable_list(list);
-        camera cam = new camera();
+        camera cam = new camera(90, (float)nx/ny);
 
         BufferedImage image = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < ny; y++) {

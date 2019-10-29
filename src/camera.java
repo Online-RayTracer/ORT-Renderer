@@ -1,8 +1,11 @@
 public class camera {
-    camera() {
-        lower_left_corner = new vec3(-2, -1, -1);
-        horizontal = new vec3(4, 0, 0);
-        vertical = new vec3(0, 2, 0);
+    camera(float vfov, float aspect) {
+        float theta = vfov * (float)Math.PI / 180;
+        float half_height = (float)Math.tan(theta/2);
+        float half_width = aspect * half_height;
+        lower_left_corner = new vec3(-half_width, -half_height, -1);
+        horizontal = new vec3(2*half_width, 0, 0);
+        vertical = new vec3(0, 2*half_height, 0);
         origin = new vec3(0, 0, 0);
     }
 
