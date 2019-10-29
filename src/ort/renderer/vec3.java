@@ -1,3 +1,5 @@
+package ort.renderer;
+
 public class vec3 {
     vec3() { x = 0; y = 0; z = 0; }
     vec3(float x1, float y1, float z1) { x = x1; y = y1; z = z1; }

@@ -1,3 +1,5 @@
+package ort.renderer;
+
 public class sphere implements hitable {
     public sphere() {}
     public sphere(vec3 cen, float r, material m) {

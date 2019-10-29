@@ -6,9 +6,9 @@ public class math {
     static vec3 random_in_unit_sphere() {
         vec3 p = new vec3();
         do {
-            p.x = (float)Math.random() * 2 - 1;
-            p.y = (float)Math.random() * 2 - 1;
-            p.z = (float)Math.random() * 2 - 1;
+            p.x = rand() * 2 - 1;
+            p.y = rand() * 2 - 1;
+            p.z = rand() * 2 - 1;
         } while (p.size_sqr() >= 1);
         return p;
     }
@@ -37,9 +37,13 @@ public class math {
     static vec3 random_in_unit_disk() {
         vec3 p = new vec3();
         do {
-            p.x = (float)Math.random() * 2 - 1;
-            p.y = (float)Math.random() * 2 - 1;
+            p.x = rand() * 2 - 1;
+            p.y = rand() * 2 - 1;
         } while (p.dot(p) >= 1);
         return p;
+    }
+
+    static float rand() {
+        return (float)Math.random();
     }
 }
