@@ -10,10 +10,12 @@ import static java.lang.Thread.currentThread;
 
 public class example {
     public static void main(String[] args) {
-        var renderer = new ORTRenderer();
+        var start = System.currentTimeMillis();
+
+        var renderer = new renderer();
         renderer.filepath = "image.png";
-        renderer.width = 400;
-        renderer.height = 200;
+        renderer.width = 1280;
+        renderer.height = 720;
         renderer.samples = 100;
         renderer.light_color = new linear_color(.9f, .9f, 1);
 
@@ -40,9 +42,12 @@ public class example {
         while (true) {
             try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
             float progress = renderer.get_progress();
-            System.out.printf("Progress: %f%%\n", progress*100);
+            System.out.printf("Progress: %.2f%%\n", progress*100);
             if (progress >= 1) break;
         }
         System.out.println("Image rendered successfully!");
+
+        var s = (System.currentTimeMillis()-start)/1000;
+        System.out.printf("Time took: %d:%02d:%02d", s/3600, s%3600/60, s%60);
     }
 }

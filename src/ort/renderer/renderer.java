@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ORTRenderer {
+public class renderer {
     String filepath;
     int width, height;
     int samples;
@@ -15,11 +15,11 @@ public class ORTRenderer {
     on_rendered on_rendered;
 
     public void start_render_async() {
-        new Thread(()->render()).start();
+        new Thread(this::render).start();
     }
 
     public float get_progress() {
-        return Math.min(1.f, (float)(width*y + x) / (width*height));
+        return (float)(y*width + x) / (width*height);
     }
 
 
@@ -43,11 +43,13 @@ public class ORTRenderer {
                 image.setRGB(x, y, col.to_color().getRGB());
             }
         }
+
         try {
             ImageIO.write(image, "png", new File(filepath));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         on_rendered.execute();
     }
 
