@@ -1,3 +1,5 @@
+package ort.renderer;
+
 public class hitable_list implements hitable {
     public hitable_list() {}
     public hitable_list(hitable[] l) {

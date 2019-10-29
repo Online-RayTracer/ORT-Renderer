@@ -1,12 +1,14 @@
+package ort.renderer;
+
 public class dielectric implements material {
     dielectric(float ri) { ref_idx = ri; }
 
     @Override
-    public boolean scatter(ray r_in, hit_record rec, vec3 out_attenuation, ray out_scattered) {
+    public boolean scatter(ray r_in, hit_record rec, linear_color out_attenuation, ray out_scattered) {
         vec3 outward_normal;
         vec3 reflected = math.reflect(r_in.dir, rec.normal);
         float ni_over_nt;
-        out_attenuation.copy(new vec3(1, 1, 1));
+        out_attenuation.reset(1, 1, 1);
         vec3 refracted = new vec3();
         float reflect_prob;
         float cosine;
