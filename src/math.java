@@ -33,4 +33,13 @@ public class math {
         r0 *= r0;
         return r0 + (1 - r0) * (float)Math.pow(1 - cosine, 5);
     }
+
+    static vec3 random_in_unit_disk() {
+        vec3 p = new vec3();
+        do {
+            p.x = (float)Math.random() * 2 - 1;
+            p.y = (float)Math.random() * 2 - 1;
+        } while (p.dot(p) >= 1);
+        return p;
+    }
 }

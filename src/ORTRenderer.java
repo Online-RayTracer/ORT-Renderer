@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class ORTRenderer {
     public static void main(String[] args) {
-        int nx = 960;
-        int ny = 540;
-        int ns = 100;
+        int nx = 1024;
+        int ny = 512;
+        int ns = 1000;
 
         hitable list[] = new hitable[5];
         list[0] = new sphere(new vec3(0, 0, -1), .5f,
@@ -23,11 +23,15 @@ public class ORTRenderer {
                 new dielectric(1.5f));
 
         hitable world = new hitable_list(list);
+
+        vec3 lookfrom = new vec3(3, 3, 2);
+        vec3 lookat = new vec3(0, 0, -1);
+        float dist_to_focus = (lookfrom.diff(lookat)).size();
+        float aperture = 1.f;
+
         camera cam = new camera(
-            new vec3(-2, 1.5f, 1),
-            new vec3(0, 0, -1),
-            new vec3(0, 1, 0),
-            30, (float)nx/ny
+            lookfrom, lookat, new vec3(0,1,0),
+            20, (float)nx/ny, aperture, dist_to_focus
         );
 
         BufferedImage image = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
