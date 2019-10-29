@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class ORTRenderer {
     public static void main(String[] args) {
-        int nx = 400;
-        int ny = 200;
+        int nx = 960;
+        int ny = 540;
         int ns = 100;
 
         hitable list[] = new hitable[5];
@@ -16,14 +16,19 @@ public class ORTRenderer {
         list[1] = new sphere(new vec3(0, -100.5f, -1), 100,
                 new lambertian(new vec3(.8f, .8f, 0)));
         list[2] = new sphere(new vec3(1, 0, -1), .5f,
-                new metal(new vec3(.8f, .6f, .2f), 0));
+                new metal(new vec3(.8f, .6f, .2f), .1f));
         list[3] = new sphere(new vec3(-1, 0, -1), .5f,
                 new dielectric(1.5f));
         list[4] = new sphere(new vec3(-1, 0, -1), -.45f,
                 new dielectric(1.5f));
 
         hitable world = new hitable_list(list);
-        camera cam = new camera(90, (float)nx/ny);
+        camera cam = new camera(
+            new vec3(-2, 1.5f, 1),
+            new vec3(0, 0, -1),
+            new vec3(0, 1, 0),
+            30, (float)nx/ny
+        );
 
         BufferedImage image = new BufferedImage(nx, ny, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < ny; y++) {
