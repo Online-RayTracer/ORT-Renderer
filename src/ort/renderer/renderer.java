@@ -26,15 +26,15 @@ public class renderer {
     private int x, y;
 
     private void render() {
-        var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (y = 0; y < height; ++y) {
             for (x = 0; x < width; ++x) {
-                var col = new linear_color();
+                linear_color col = new linear_color();
 
-                for (var s = 0; s < samples; ++s) {
-                    var u = (x + math.rand()) / width;
-                    var v = 1 - (y + math.rand()) / height;
-                    var r = cam.get_ray(u, v);
+                for (int s = 0; s < samples; ++s) {
+                    float u = (x + math.rand()) / width;
+                    float v = 1 - (y + math.rand()) / height;
+                    ray r = cam.get_ray(u, v);
                     col.add(get_color(r, 0));
                 }
 
@@ -56,8 +56,8 @@ public class renderer {
     private linear_color get_color(ray r, int depth) {
         hit_record rec = new hit_record();
         if (world.hit(r, .001f, Float.MAX_VALUE, rec)) {
-            var scattered = new ray();
-            var attenuation = new linear_color();
+            ray scattered = new ray();
+            linear_color attenuation = new linear_color();
             if (depth < 50 && rec.mat.scatter(r, rec, attenuation, scattered)) {
                 return get_color(scattered, depth+1).get_mul(attenuation);
             }

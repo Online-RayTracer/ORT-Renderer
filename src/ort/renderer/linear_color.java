@@ -18,12 +18,12 @@ public class linear_color {
     void reset(float r, float g, float b) {this.r=r;this.g=g;this.b=b;}
 
     void add(linear_color c) { r += c.r; g += c.g; b += c.b; }
-    linear_color sum(linear_color c) { var ret = new linear_color(this); ret.add(c); return ret; }
+    linear_color sum(linear_color c) { linear_color ret = new linear_color(this); ret.add(c); return ret; }
 
     void mul(float f) { r *= f; g *= f; b *= f; }
     void mul(linear_color o) { r *= o.r; g *= o.g; b *= o.b; }
-    linear_color get_mul(float f) { var ret = new linear_color(this); ret.mul(f); return ret; }
-    linear_color get_mul(linear_color o) { var ret = new linear_color(this); ret.mul(o); return ret; }
+    linear_color get_mul(float f) { linear_color ret = new linear_color(this); ret.mul(f); return ret; }
+    linear_color get_mul(linear_color o) { linear_color ret = new linear_color(this); ret.mul(o); return ret; }
 
     linear_color lerp(linear_color b, float t) { return get_mul(1-t).sum(b.get_mul(t)); }
 
